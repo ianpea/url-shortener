@@ -1,0 +1,1 @@
+export const SHORT_CODE_LEN = 7;
