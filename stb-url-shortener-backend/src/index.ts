@@ -115,7 +115,7 @@ function sleep(ms: number = 250): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function normalizeUrl(url: string): string {
+export function normalizeUrl(url: string): string {
     if(url.startsWith("http://") || url.startsWith("https://")) {
         return url;
     }

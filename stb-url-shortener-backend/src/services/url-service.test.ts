@@ -47,6 +47,7 @@ describe('generateShortUrl', () => {
         expect(() => createShortUrl("https://example.com", undefined)).toThrow('disk is on fire');
         expect(insertUrlMock).toHaveBeenCalledTimes(1);
     });
+
     it('gives up and throws after MAX_RETRIES collisions', () => {
         generateShortCodeMock.mockReturnValue('aaaaaaa');
         insertUrlMock.mockImplementation(() => {
@@ -55,6 +56,7 @@ describe('generateShortUrl', () => {
 
         expect(() => createShortUrl('https://example.com', undefined)).toThrow('Failed to generate unique short code');
         expect(insertUrlMock).toHaveBeenCalledTimes(3); // MAX_RETRIES
+        expect(generateShortCodeMock).toHaveBeenCalledTimes(3); // MAX_RETRIES
     });
     it('passes null as the expiry date when none was provided', () => {
         generateShortCodeMock.mockReturnValue('abc1234');
