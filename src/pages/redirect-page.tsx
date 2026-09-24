@@ -1,32 +1,52 @@
 import {useEffect, useState} from "react";
 import {Skeleton} from "../components/ui/skeleton";
 import {Link, useParams} from "react-router-dom";
+import {ApiError, makeRequest} from "../utils/http";
 
+interface UrlLookupResponse {
+    url: string;
+    expiryDate: string | null;
+}
+
+interface ExpiredUrlResponse {
+    expired: true;
+    expiryDate: string | null;
+}
+
+function isExpiredResponse(body: unknown): body is ExpiredUrlResponse {
+    return typeof body === 'object' && body !== null && (body as {expired?: unknown;}).expired === true;
+}
 
 export function RedirectPage() {
     const [originalUrl, setOriginalUrl] = useState('');
     const {shortCode} = useParams<{shortCode: string;}>();
     const [expiryDate, setExpiryDate] = useState('');
     const [expired, setExpired] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         if(!shortCode) return;
-        async function fetchUrl() {
-            const response = await fetch(`/api/urls/${shortCode}`);
 
-            if(!response.ok) {
-                const data = await response.json();
-                if(data.expired) {
+        async function fetchUrl() {
+            try {
+                const data = await makeRequest<UrlLookupResponse>(`/api/urls/${shortCode}`);
+                setOriginalUrl(data.url);
+                setExpiryDate(data.expiryDate ?? '');
+            } catch(error) {
+                // An expired link is an expected outcome, so it gets its own state
+                // instead of being reported as an error.
+                if(error instanceof ApiError && isExpiredResponse(error.body)) {
                     setExpired(true);
-                    setExpiryDate(data.expiryDate);
+                    setExpiryDate(error.body.expiryDate ?? '');
                     return;
                 }
-            }
 
-            const data = await response.json();
-            // todo: type the data if possible?
-            setOriginalUrl(data.url);
-            setExpiryDate(data.expiryDate);
+                setErrorMessage(
+                    error instanceof ApiError
+                        ? error.message
+                        : 'Something went wrong, please try again.'
+                );
+            }
         }
 
         void fetchUrl();
@@ -37,7 +57,7 @@ export function RedirectPage() {
         if(!originalUrl) return;
         const timer = setTimeout(() => {
             window.location.href = originalUrl;
-        }, 30000);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [originalUrl, expired]);
@@ -46,7 +66,16 @@ export function RedirectPage() {
         <>
             <div className="flex flex-col items-center text-sm w-full">
                 {
-                    !expired &&
+                    errorMessage &&
+                    <>
+                        <p className="pb-1">Unable to open that link.</p>
+                        <div className="flex justify-center flex-1 text-gray-400 break-all sm:w-1/3">{errorMessage}</div>
+                        <p className="text-xs text-gray-600 mt-3">Create a new short link <Link to='/' className="underline animate-pulse">here</Link>.</p>
+                    </>
+                }
+
+                {
+                    !errorMessage && !expired &&
                     <>
                         <p className="pb-1 animate-pulse">Redirecting you to...</p>
                         <div className="flex justify-center flex-1 text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
@@ -62,7 +91,7 @@ export function RedirectPage() {
                 }
 
                 {
-                    expired &&
+                    !errorMessage && expired &&
                     <>
                         <p className="pb-1">URL expired, create a new one <Link to='/' className="underline animate-pulse">here</Link>...</p><div className="text-gray-400">{originalUrl}</div>
                         {expiryDate && <p className="text-xs text-gray-600 mt-3">Expired at {new Date(expiryDate).toLocaleString('en-SG')}</p>}

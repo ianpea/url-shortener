@@ -83,7 +83,7 @@ app.get("/api/urls/:shortCode", (req, res) => {
     }
 
     if(result.expiryDate && new Date(result.expiryDate) <= new Date()) {
-        res.status(400).json({expired: true, expiryDate: result.expiryDate});
+        return res.status(400).json({expired: true, expiryDate: result.expiryDate});
     }
 
     res.json({url: result.originalUrl, expiryDate: result.expiryDate});
