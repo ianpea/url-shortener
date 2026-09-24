@@ -1,3 +1,6 @@
+import {makeRequest} from "@/utils/http";
+import type {UrlRecord} from "../../stb-url-shortener-backend/src/db/url";
+
 export interface ShortenUrlRequest {
     url: string;
     password?: string; // encoded
@@ -9,7 +12,7 @@ export interface ShortenUrlResponse {
 }
 
 export interface PaginationResponse {
-    items: any[],
+    items: UrlRecord[],
     page: number,
     pageSize: number,
     total: number,
@@ -19,19 +22,11 @@ export interface PaginationResponse {
 export async function shortenUrl(
     request: ShortenUrlRequest
 ): Promise<ShortenUrlResponse> {
-    const response = await fetch("/api/shorten", {
+    return makeRequest<ShortenUrlResponse>("/api/shorten", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(request)
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(request),
     });
-
-    if(!response.ok) {
-        const body = await response.json();
-        throw new Error(body.error ?? `Request failed with status ${response.status}`);
-    }
-    return response.json();
 }
 
 export async function deleteUrl(id: number): Promise<void> {

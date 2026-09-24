@@ -16,7 +16,7 @@ export function UrlInput({value, placeholder, onChange}: UrlInputProps) {
                 <div className="text-sm sm:text-lg">
                     Enter your destination link
                 </div>
-                <div className="flex justify-center items-center content-center">
+                <div className="flex justify-center items-center content-center transition-transform duration-300 hover:scale-110">
                     <Tooltip>
                         <TooltipTrigger>
                             <Info className="size-4 text-muted-foreground" />

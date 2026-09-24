@@ -37,7 +37,7 @@ export function RedirectPage() {
         if(!originalUrl) return;
         const timer = setTimeout(() => {
             window.location.href = originalUrl;
-        }, 4000);
+        }, 30000);
 
         return () => clearTimeout(timer);
     }, [originalUrl, expired]);
@@ -48,13 +48,14 @@ export function RedirectPage() {
                 {
                     !expired &&
                     <>
-                        <p className="pb-1 animate-pulse">Redirecting you to...</p><div className="text-gray-400">{originalUrl}</div>
+                        <p className="pb-1 animate-pulse">Redirecting you to...</p>
+                        <div className="flex justify-center flex-1 text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
                         {expiryDate && <p className="text-xs text-gray-600 mt-3">Expires at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
-                        <div className="flex items-center gap-4 pt-4 w-full min-w-0 sm:w-1/5">
-                            <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
+                        <div className="flex items-center gap-4 pt-4 w-full min-w-0 sm:w-2/5">
+                            <Skeleton className="h-12 w-12 shrink-0 rounded-full bg-gray-200" />
                             <div className="min-w-0 flex-1 space-y-2">
-                                <Skeleton className="h-4 w-full" />
-                                <Skeleton className="h-4 w-3/4" />
+                                <Skeleton className="h-4 w-full bg-gray-200" />
+                                <Skeleton className="h-4 w-3/4 bg-gray-200" />
                             </div>
                         </div>
                     </>
