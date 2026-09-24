@@ -1,6 +1,16 @@
 import Database from "better-sqlite3";
 
-export const db = new Database("urls.db");
+// Tests always get a throwaway in-memory database. This is keyed off NODE_ENV
+// (which vitest sets to "test") rather than only the DB_PATH env var, so the
+// suite stays isolated on any machine even if vitest.config.ts is missing.
+function resolveDbPath(): string {
+    if (process.env.DB_PATH) {
+        return process.env.DB_PATH;
+    }
+    return process.env.NODE_ENV === "test" ? ":memory:" : "urls.db";
+}
+
+export const db = new Database(resolveDbPath());
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS urls (

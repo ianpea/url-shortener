@@ -32,6 +32,5 @@
   },
   "include": [
     "src",
-    "stb-url-shortener-backend/src/db"
   ]
 }

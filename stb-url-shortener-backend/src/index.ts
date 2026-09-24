@@ -2,10 +2,13 @@ import express from "express";
 import cors from "cors";
 import z from "zod";
 import {countUrls, deleteUrlById, findUrlByShortCode, findUrls} from "./db/url";
-import {generateShortUrl} from "./services/url-service";
+import {createShortUrl} from "./services/url-service";
 
-const app = express();
+export const app = express();
 const PORT = 3000;
+
+app.use(cors());
+app.use(express.json());
 
 const shortenUrlRequestSchema = z.object({
     url: z.string()
@@ -19,12 +22,6 @@ const shortenUrlRequestSchema = z.object({
     }).optional()
 });
 
-const getUrlRequestSchema = z.object({
-    shortCode: z.string().length(7)
-});
-
-app.use(cors());
-app.use(express.json());
 
 
 app.post("/api/shorten", async (req, res) => {
@@ -37,7 +34,7 @@ app.post("/api/shorten", async (req, res) => {
         });
     }
 
-    const urlRecord = generateShortUrl(result.data.url, result.data.expiryDate);
+    const urlRecord = createShortUrl(result.data.url, result.data.expiryDate);
     if(!urlRecord) {
         return res.status(400).json({
             error: "Unable to generate short url, please try again",
@@ -51,7 +48,6 @@ const paginationSchema = z.object({
     page: z.coerce.number().int().min(1).default(1),
     pageSize: z.coerce.number().int().min(1).max(100).default(5),
 });
-
 app.get("/api/urls", async (req, res) => {
     await sleep(250);
 
@@ -67,6 +63,9 @@ app.get("/api/urls", async (req, res) => {
     res.json({items: result, page, pageSize, total, totalPages: Math.ceil(total / pageSize)});
 });
 
+const getUrlRequestSchema = z.object({
+    shortCode: z.string().length(7)
+});
 app.get("/api/urls/:shortCode", (req, res) => {
     const parseResult = getUrlRequestSchema.safeParse(req.params);
 
@@ -95,7 +94,7 @@ app.delete("/api/url", async (req, res) => {
     const parseResult = deleteSchema.safeParse(req.body);
     if(!parseResult.success) {
         return res.status(400).json({
-            error: parseResult.error.issues.map(issue => issue.message).join(',')
+            error: parseResult.error.issues.map(issue => issue.message).join(', ')
         });
     }
 
@@ -108,9 +107,12 @@ app.delete("/api/url", async (req, res) => {
 
 });
 
-app.listen(PORT, () => {
-    console.log(`Session started at http:;//localhost:${PORT}`);
-});
+// Skipped while running tests so importing `app` doesn't bind the port.
+if(process.env.NODE_ENV !== "test") {
+    app.listen(PORT, () => {
+        console.log(`Session started at http:;//localhost:${PORT}`);
+    });
+}
 
 function sleep(ms: number = 250): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));

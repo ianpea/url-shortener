@@ -1,4 +1,4 @@
-import {insertUrl, UrlRecord} from "../db/url";
+import {insertUrl, type UrlRecord} from "../db/url";
 import {generateShortCode} from "../utils/short-code";
 
 const MAX_RETRIES = 3;
@@ -11,7 +11,7 @@ function isUniqueConstraintError(error: unknown): boolean {
     );
 }
 
-export function generateShortUrl(originalUrl: string, expiryDate: string | undefined): UrlRecord | undefined {
+export function createShortUrl(originalUrl: string, expiryDate: string | undefined): UrlRecord | undefined {
     for(let i = 0; i < MAX_RETRIES; i++) {
         const shortCode = generateShortCode();
         try {
