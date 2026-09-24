@@ -21,9 +21,6 @@ const shortenUrlRequestSchema = z.object({
         error: "Expiry date must be in the future"
     }).optional()
 });
-
-
-
 app.post("/api/shorten", async (req, res) => {
     await sleep();
     const result = shortenUrlRequestSchema.safeParse(req.body);
@@ -121,10 +118,6 @@ function sleep(ms: number = 250): Promise<void> {
 function normalizeUrl(url: string): string {
     if(url.startsWith("http://") || url.startsWith("https://")) {
         return url;
-    }
-
-    if(url.startsWith("localhost")) {
-        return `http://${url}`;
     }
 
     return `https://${url}`;

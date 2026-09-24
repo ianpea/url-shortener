@@ -30,14 +30,14 @@ export async function shortenUrl(
 }
 
 export async function deleteUrl(id: number): Promise<void> {
-    const response = await fetch('/api/url', {
+    // Not using makeRequest here: the endpoint answers 201 with an empty body, and
+    // makeRequest only skips body parsing for 204, so it would throw SyntaxError.
+    const response = await fetch("/api/url", {
         method: "DELETE",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({id})
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({id}),
     });
+
     if(!response.ok) {
         const body = await response.json();
         throw new Error(body.error ?? `Request failed with status ${response.status}`);
@@ -45,13 +45,5 @@ export async function deleteUrl(id: number): Promise<void> {
 }
 
 export async function getUrls(page: number, pageSize: number): Promise<PaginationResponse> {
-    const response = await fetch(`/api/urls?page=${page}&pageSize=${pageSize}`);
-
-    if(!response.ok) {
-        const body = await response.json();
-        throw new Error(body.error ?? `Request failed with status ${response.status}`);
-    }
-
-    return response.json();
-
+    return makeRequest<PaginationResponse>(`/api/urls?page=${page}&pageSize=${pageSize}`);
 }
