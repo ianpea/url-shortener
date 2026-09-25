@@ -77,7 +77,7 @@ describe('RedirectPage', () => {
 
         const {container} = renderRedirectPage();
 
-        expect(skeletonCount(container)).toBe(3);
+        expect(skeletonCount(container)).toBe(2);
         expect(screen.queryByText(ORIGINAL_URL)).not.toBeInTheDocument();
 
         await act(async () => {

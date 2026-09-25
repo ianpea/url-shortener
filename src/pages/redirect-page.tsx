@@ -57,7 +57,7 @@ export function RedirectPage() {
         if(!originalUrl) return;
         const timer = setTimeout(() => {
             window.location.href = originalUrl;
-        }, 3000);
+        }, 30000);
 
         return () => clearTimeout(timer);
     }, [originalUrl, expired]);
@@ -69,8 +69,8 @@ export function RedirectPage() {
                     errorMessage &&
                     <>
                         <p className="pb-1">Unable to open that link.</p>
-                        <div className="flex justify-center flex-1 text-gray-400 break-all sm:w-1/3">{errorMessage}</div>
-                        <p className="text-xs text-gray-600 mt-3">Create a new short link <Link to='/' className="underline animate-pulse">here</Link>.</p>
+                        <div className="flex w-full justify-center px-4 text-gray-400 break-all sm:w-1/3">{errorMessage}</div>
+                        <p className="mt-3 text-xs text-gray-600">Create a new short link <Link to='/' className="underline animate-pulse">here</Link>.</p>
                     </>
                 }
 
@@ -78,14 +78,11 @@ export function RedirectPage() {
                     !errorMessage && !expired &&
                     <>
                         <p className="pb-1 animate-pulse">Redirecting you to...</p>
-                        <div className="flex justify-center flex-1 text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
-                        {expiryDate && <p className="text-xs text-gray-600 mt-3">Expires at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
-                        <div className="flex items-center gap-4 pt-4 w-full min-w-0 sm:w-2/5">
-                            <Skeleton className="h-12 w-12 shrink-0 rounded-full bg-gray-200" />
-                            <div className="min-w-0 flex-1 space-y-2">
-                                <Skeleton className="h-4 w-full bg-gray-200" />
-                                <Skeleton className="h-4 w-3/4 bg-gray-200" />
-                            </div>
+                        <div className="flex w-full justify-center px-4 text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
+                        {expiryDate && <p className="mt-3 text-xs text-gray-600">Expires at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
+                        <div className="mt-4 flex w-full flex-col items-center gap-2">
+                            <Skeleton className="h-4 w-3/4 max-w-md bg-gray-200" />
+                            <Skeleton className="h-4 w-1/2 max-w-sm bg-gray-200" />
                         </div>
                     </>
                 }
@@ -93,8 +90,9 @@ export function RedirectPage() {
                 {
                     !errorMessage && expired &&
                     <>
-                        <p className="pb-1">URL expired, create a new one <Link to='/' className="underline animate-pulse">here</Link>...</p><div className="text-gray-400">{originalUrl}</div>
-                        {expiryDate && <p className="text-xs text-gray-600 mt-3">Expired at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
+                        <p className="pb-1">URL expired, create a new one <Link to='/' className="underline animate-pulse">here</Link>...</p>
+                        <div className="w-full px-4 text-center text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
+                        {expiryDate && <p className="mt-3 text-xs text-gray-600">Expired at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
                     </>
                 }
             </div >
