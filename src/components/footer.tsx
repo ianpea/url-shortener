@@ -1,14 +1,17 @@
 import {Link} from "lucide-react";
 import {ThemeToggle} from "./theme-toggle";
 
-export function Header() {
-    return <footer className="flex flex-row items-center gap-2 text-center">
-        <div className="flex flex-row">&nbsp;<a className="flex flex-row items-center" target="window" href="https://ianpea.github.io"><p className="underline text-xs sm:text-sm">Ian Pee</p>&nbsp;<Link size={14} /></a>  </div>
-        <div>•</div>
-        <div className="transition-transform duration-200 hover:rotate-90">
+export function Footer() {
+    return <footer className="flex items-center justify-between text-muted-foreground">
+        <p className="text-xs">Shorter links. Less clutter.</p>
+        <div className="flex items-center gap-2">
+            <a className="flex items-center gap-1 text-xs transition-colors hover:text-foreground sm:text-sm" target="_blank" rel="noreferrer" href="https://ianpea.github.io">Ian Pee <Link size={13} /></a>
+            <span className="text-border">•</span>
+            <div className="transition-transform duration-200 hover:rotate-12">
             <ThemeToggle></ThemeToggle>
+            </div>
         </div>
     </footer>;
 }
 
-export default Header;
+export default Footer;

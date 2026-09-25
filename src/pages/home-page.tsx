@@ -2,11 +2,11 @@
 import {useState} from 'react';
 import {Spinner} from '../components/ui/spinner';
 import {Button} from '../components/ui/button';
-import {Card, CardFooter} from '../components/ui/card';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '../components/ui/card';
 import UrlInput from '../components/url-input';
 import {ToggleGroup, ToggleGroupItem} from '../components/ui/toggle-group';
 import {StbAlertDialog} from '../components/stb-alert-dialog';
-import {ClockFading} from 'lucide-react';
+import {ClockFading, Link2, LockKeyhole, Sparkles, Zap} from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipTrigger} from '../components/ui/tooltip';
 import type {ShortenUrlResponse} from '../api/url-api';
 import {copyShortUrl, normalizeUrl, validate} from '../utils/url';
@@ -57,10 +57,35 @@ export function HomePage() {
         });
     }
 
-    return <>
-        <div className="flex flex-1 w-full items-center justify-center">
-            <Card className="flex w-full sm:w-1/2 mx-3 px-6 items-center">
-                <form className='' onSubmit={(e) => {
+    return <div className="flex flex-1 flex-col items-center justify-center py-12 sm:py-16">
+        <section className="w-full max-w-3xl text-center">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
+                <Sparkles className="size-3.5" /> Clean, quick and easy to share
+            </div>
+            <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                Make every link <span className="text-primary">feel effortless.</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-pretty text-sm leading-6 text-muted-foreground sm:text-base">
+                Transform unwieldy URLs into tidy links in seconds. Paste your destination below and we’ll handle the rest.
+            </p>
+
+            <Card className="relative mt-9 w-full border border-border/70 bg-card/90 text-left shadow-xl shadow-primary/5 backdrop-blur sm:mt-10">
+                <CardHeader className="border-b border-border/60 pb-5">
+                    <div className="flex items-start justify-between gap-4">
+                        <div>
+                            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                                <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary"><Link2 className="size-4" /></span>
+                                Create a short link
+                            </CardTitle>
+                            <CardDescription className="mt-1.5">Enter any valid web address to get started.</CardDescription>
+                        </div>
+                        <span className="hidden items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground sm:flex">
+                            <LockKeyhole className="size-3" /> Private
+                        </span>
+                    </div>
+                </CardHeader>
+                <CardContent className="pt-1">
+                <form onSubmit={(e) => {
                     e.preventDefault();
                     handleSubmit();
                 }}>
@@ -70,31 +95,48 @@ export function HomePage() {
                         placeholder="https://www.example.com"
                     />
 
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                        <ToggleGroup multiple value={options} onValueChange={setOptions}>
+                            <Tooltip>
+                                <TooltipTrigger render={
+                                    <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="expiry" aria-label="Toggle expiry">
+                                        <ClockFading /> Expiry
+                                    </ToggleGroupItem>
+                                } />
+                                <TooltipContent>Set your link to expire</TooltipContent>
+                            </Tooltip>
+                        </ToggleGroup>
+                        <span className="text-xs text-muted-foreground">Optional settings</span>
+                    </div>
+
                     {options.includes('expiry') &&
-                        <div className='pt-4 w-full'>
+                        <div className='mt-4 w-full rounded-xl border border-border/60 bg-muted/40 p-3'>
                             <DatePicker value={expiryDate} onChange={(e) => {setExpiryDate(e); setErr('');}} placeholder='Expiry date'></DatePicker>
                         </div>
                     }
-                    {err && <p className="text-red-600 ml-4 mt-4 text-xs sm:text-sm">{err}</p>}
+                    {err && <p role="alert" className="mt-3 text-xs text-destructive sm:text-sm">{err}</p>}
 
-                    <CardFooter className="items-center content-center">
-                        <Button
-                            className="w-full mt-4 text-xs md:text-sm"
+                        <Button type="submit"
+                            className="mt-5 h-11 w-full rounded-xl text-sm shadow-sm shadow-primary/20"
                             disabled={err != '' || url == '' || shortenMutation.isPending}
-                            onClick={() => handleSubmit()}
                         >
                             {shortenMutation.isPending ? (
                                 <>
                                     <Spinner></Spinner> Shortening...
                                 </>
                             ) : (
-                                'Shorten'
+                                <><Zap className="size-4" /> Shorten my link</>
                             )}{' '}
                         </Button>
-                    </CardFooter>
                 </form>
-
+                </CardContent>
             </Card>
+
+            <div className="mt-6 flex justify-center">
+                <HistorySheet></HistorySheet>
+            </div>
+            <p className="mt-5 text-xs text-muted-foreground">No account needed · Your links stay under your control</p>
+        </section>
 
             <StbAlertDialog
                 open={dialog}
@@ -138,22 +180,5 @@ export function HomePage() {
                     setDialog(false);
                 }}
             ></StbAlertDialog>
-        </div>
-        <HistorySheet></HistorySheet>
-
-        <div>
-            <ToggleGroup multiple value={options} onValueChange={setOptions}>
-                <Tooltip>
-                    <TooltipTrigger render={
-                        <ToggleGroupItem className='p-5 aria-pressed:bg-blue-400 aria-pressed:text-white' variant='outline' value="expiry" aria-label="Toggle expiry">
-                            <ClockFading /> Expiry
-                        </ToggleGroupItem>
-                    }>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        Set your link to expire
-                    </TooltipContent>
-                </Tooltip>
-            </ToggleGroup>
-        </div></>;
+    </div>;
 }

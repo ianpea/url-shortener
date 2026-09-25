@@ -1,5 +1,5 @@
 import {useUrls} from "@/hooks/use-urls";
-import {RotateCcwClock, ClockFading, Copy, Trash, Link, ArrowLeft, ArrowRight} from "lucide-react";
+import {RotateCcwClock, ClockFading, Copy, Trash, ArrowLeft, ArrowRight} from "lucide-react";
 import {useState} from "react";
 import {Item, ItemContent, ItemTitle, ItemDescription, ItemActions} from "./ui/item";
 import {Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription} from "./ui/sheet";
@@ -40,7 +40,7 @@ export function HistorySheet() {
                     setPage((page) => page - 1);
                 }
                 setDeletingIds(prev => {
-                    let newSet = new Set(prev);
+                    const newSet = new Set(prev);
                     newSet.delete(id);
                     return newSet;
                 });
