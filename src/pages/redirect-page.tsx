@@ -64,7 +64,7 @@ export function RedirectPage() {
 
     return (
         <>
-            <div className="flex flex-col items-center text-sm w-full">
+            <div className="flex w-full flex-1 flex-col items-center justify-center py-12 text-sm sm:py-16">
                 {
                     errorMessage &&
                     <>
