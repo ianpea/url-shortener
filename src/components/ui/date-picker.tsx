@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import {format} from "date-fns";
+import {addDays, format} from "date-fns";
 import {Calendar as CalendarIcon} from "lucide-react";
 
 import {Button} from "@/components/ui/button";
@@ -35,7 +34,7 @@ export function DatePicker({value, onChange, placeholder}: DatePickerProps) {
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
                 <Calendar required={false} mode="single" selected={value} onSelect={onChange}
-                    disabled={{before: new Date()}} />
+                    disabled={{before: addDays(new Date(), 1)}} />
             </PopoverContent>
         </Popover>
     );
