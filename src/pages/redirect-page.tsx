@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Skeleton} from "../components/ui/skeleton";
 import {Link, useParams} from "react-router-dom";
 import {ApiError, makeRequest} from "../utils/http";
+import {formatExpiry} from "../utils/date";
 
 interface UrlLookupResponse {
     url: string;
@@ -57,7 +58,7 @@ export function RedirectPage() {
         if(!originalUrl) return;
         const timer = setTimeout(() => {
             window.location.href = originalUrl;
-        }, 30000);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [originalUrl, expired]);
@@ -79,7 +80,7 @@ export function RedirectPage() {
                     <>
                         <p className="pb-1 animate-pulse">Redirecting you to...</p>
                         <div className="flex w-full justify-center px-4 text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
-                        {expiryDate && <p className="mt-3 text-xs text-gray-600">Expires at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
+                        {expiryDate && <p className="mt-3 text-xs text-gray-600">Expires at {formatExpiry(expiryDate)}</p>}
                         <div className="mt-4 flex w-full flex-col items-center gap-2">
                             <Skeleton className="h-4 w-3/4 max-w-md bg-gray-200" />
                             <Skeleton className="h-4 w-1/2 max-w-sm bg-gray-200" />
@@ -92,7 +93,7 @@ export function RedirectPage() {
                     <>
                         <p className="pb-1">URL expired, create a new one <Link to='/' className="underline animate-pulse">here</Link>...</p>
                         <div className="w-full px-4 text-center text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
-                        {expiryDate && <p className="mt-3 text-xs text-gray-600">Expired at {new Date(expiryDate).toLocaleString('en-SG')}</p>}
+                        {expiryDate && <p className="mt-3 text-xs text-gray-600">Expired at {formatExpiry(expiryDate)}</p>}
                     </>
                 }
             </div >

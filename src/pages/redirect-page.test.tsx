@@ -2,6 +2,7 @@ import {act, render, screen} from '@testing-library/react';
 import {MemoryRouter, Route, Routes} from 'react-router-dom';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {RedirectPage} from './redirect-page';
+import {formatExpiry} from '@/utils/date';
 
 const SHORT_CODE = 'abc1234';
 const ORIGINAL_URL = 'https://example.com/a-very-long-page';
@@ -65,7 +66,7 @@ describe('RedirectPage', () => {
         expect(await screen.findByText(ORIGINAL_URL)).toBeInTheDocument();
         expect(fetch).toHaveBeenCalledWith(`/api/urls/${SHORT_CODE}`, undefined);
         expect(screen.getByText('Redirecting you to...')).toBeInTheDocument();
-        expect(screen.getByText(`Expires at ${new Date(EXPIRY_DATE).toLocaleString('en-SG')}`)).toBeInTheDocument();
+        expect(screen.getByText(`Expires at ${formatExpiry(EXPIRY_DATE)}`)).toBeInTheDocument();
         expect(screen.queryByText(/URL expired/)).not.toBeInTheDocument();
     });
 
@@ -85,7 +86,7 @@ describe('RedirectPage', () => {
         });
 
         expect(screen.getByText(ORIGINAL_URL)).toBeInTheDocument();
-        expect(screen.getByText(`Expires at ${new Date(EXPIRY_DATE).toLocaleString('en-SG')}`)).toBeInTheDocument();
+        expect(screen.getByText(`Expires at ${formatExpiry(EXPIRY_DATE)}`)).toBeInTheDocument();
     });
 
     it('redirects to the destination once the 3 second delay has passed', async () => {
@@ -115,7 +116,7 @@ describe('RedirectPage', () => {
 
         expect(await screen.findByText(/URL expired, create a new one/)).toBeInTheDocument();
         expect(screen.getByRole('link', {name: 'here'})).toHaveAttribute('href', '/');
-        expect(screen.getByText(`Expired at ${new Date(EXPIRY_DATE).toLocaleString('en-SG')}`)).toBeInTheDocument();
+        expect(screen.getByText(`Expired at ${formatExpiry(EXPIRY_DATE)}`)).toBeInTheDocument();
         expect(screen.queryByText('Redirecting you to...')).not.toBeInTheDocument();
 
         expect(setTimeoutSpy.mock.calls.some(([, delay]) => delay === REDIRECT_DELAY_MS)).toBe(false);

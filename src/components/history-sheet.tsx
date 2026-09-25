@@ -10,6 +10,7 @@ import {showToast} from "@/utils/toast-util";
 import {Badge} from "./ui/badge";
 import {useDeleteUrl} from "@/hooks/use-delete-url";
 import {Separator} from "./ui/separator";
+import {formatExpiry} from "@/utils/date";
 
 export function HistorySheet() {
     const [historyOpen, setHistoryOpen] = useState(false);
@@ -74,13 +75,15 @@ export function HistorySheet() {
                         {!historyQuery.isFetching && historyQuery.data?.items.map(url => (
                             <div className="w-full" key={url.id}>
                                 <Item variant="outline">
-                                    <ItemContent>
+                                    {/* min-w-0 lets this column shrink instead of forcing the
+                                        flex-wrap parent to push ItemActions onto its own row. */}
+                                    <ItemContent className="min-w-0">
                                         <ItemTitle className="line-clamp-none break-all text-xs sm:text-sm text-gray-700 dark:text-gray-200 ">
                                             <span>{url.originalUrl}</span>
                                         </ItemTitle>
                                         <ItemDescription className='flex flex-col'>
-                                            <span className='flex items-center mt-2'>
-                                                {url.expiryDate && <Badge variant='outline'><ClockFading className='size-4 mr-1' /> <span className="text-xs text-gray-400 ">{new Date(url.expiryDate).toLocaleString('en-SG')}</span></Badge>}
+                                            <span className='mt-2 flex min-w-0 items-center'>
+                                                {url.expiryDate && <Badge variant='outline' className='min-w-0 shrink'><ClockFading className='size-4 shrink-0' /> <span className="truncate text-xs text-gray-400">{formatExpiry(url.expiryDate)}</span></Badge>}
                                             </span>
                                         </ItemDescription>
                                     </ItemContent>
