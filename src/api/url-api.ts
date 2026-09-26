@@ -1,5 +1,5 @@
 import {makeRequest} from "@/utils/http";
-import type {UrlRecord} from "../../stb-url-shortener-backend/src/db/url";
+import type {UrlRecord} from "../../url-shortener-backend/src/db/url";
 
 export interface ShortenUrlRequest {
     url: string;
