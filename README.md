@@ -54,7 +54,7 @@ cd url-shortener-backend
 npm test
 ```
 
-Run the API flow tests from the repository root. These exercise the frontend API client against the real backend and test database:
+Run the e2e tests: (_in repository root_)
 
 ```bash
 npm run test:e2e
