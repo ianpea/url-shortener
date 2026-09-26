@@ -6,10 +6,11 @@ import {Tooltip, TooltipContent, TooltipTrigger} from "./ui/tooltip";
 interface UrlInputProps {
     value: string;
     placeholder?: string;
+    autoFocus?: boolean;
     onChange: (newValue: string) => void;
 }
 
-export function UrlInput({value, placeholder, onChange}: UrlInputProps) {
+export function UrlInput({value, placeholder, autoFocus, onChange}: UrlInputProps) {
     return (
         <div className="flex w-full flex-1 flex-col gap-2">
             <Label className="flex flex-1 items-center gap-1.5" htmlFor="url">
@@ -34,6 +35,7 @@ export function UrlInput({value, placeholder, onChange}: UrlInputProps) {
                         className="h-12 rounded-xl border-border/80 bg-background/80 px-4 text-sm shadow-inner shadow-foreground/[0.02] transition-shadow focus-visible:ring-primary/20"
                         id="url"
                         type="text"
+                        autoFocus={autoFocus}
                         placeholder={placeholder ?? "Enter a URL"}
                         value={value}
                         onChange={(e) => onChange(e.target.value)}

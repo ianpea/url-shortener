@@ -26,6 +26,12 @@ describe('UrlInput', () => {
         expect(screen.getByPlaceholderText('Enter a URL')).toBeInTheDocument();
     });
 
+    it('focuses the input when autoFocus is set', () => {
+        renderUrlInput({autoFocus: true});
+
+        expect(screen.getByRole('textbox')).toHaveFocus();
+    });
+
     it('emits typed characters through onChange', async () => {
         const user = userEvent.setup();
         const {onChange} = renderUrlInput();

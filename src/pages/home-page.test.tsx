@@ -73,4 +73,15 @@ describe('HomePage validation feedback', () => {
             expect.anything(),
         ));
     });
+
+    it('keeps the submit button enabled after a failed request so it can be retried', async () => {
+        vi.mocked(shortenUrl).mockRejectedValue(new Error('Bad gateway'));
+        const user = renderHomePage();
+
+        await user.type(screen.getByPlaceholderText('https://www.example.com'), 'https://example.com/a/long/destination/path');
+        await user.click(screen.getByRole('button', {name: /Shorten my link/i}));
+
+        expect(await screen.findByText('Bad gateway')).toBeInTheDocument();
+        expect(screen.getByRole('button', {name: /Shorten my link/i})).toBeEnabled();
+    });
 });

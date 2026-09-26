@@ -6,7 +6,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '../comp
 import UrlInput from '../components/url-input';
 import {ToggleGroup, ToggleGroupItem} from '../components/ui/toggle-group';
 import {StbAlertDialog} from '../components/stb-alert-dialog';
-import {ClockFading, Link2, LockKeyhole, Sparkles, Tag, Zap} from 'lucide-react';
+import {ClockFading, Link2, LockKeyhole, Tag, Zap} from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipTrigger} from '../components/ui/tooltip';
 import type {ShortenUrlResponse} from '../api/url-api';
 import {copyShortUrl, normalizeUrl, validate} from '../utils/url';
@@ -61,18 +61,14 @@ export function HomePage() {
         });
     }
 
-    return <div className="flex flex-1 flex-col items-center justify-center py-12 sm:py-16">
+    return <div className="flex flex-1 flex-col items-center justify-center py-8 sm:py-12">
         <section className="w-full max-w-3xl text-center">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
-                <Sparkles className="size-3.5" /> Clean, quick and easy to share
-            </div>
             <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
                 Make every link <span className="text-primary">feel effortless.</span>
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-pretty text-sm leading-6 text-muted-foreground sm:text-base">
                 Transform unwieldy URLs into tidy links in seconds. Paste your destination below and we’ll handle the rest.
             </p>
-
             <Card className="relative mt-9 w-full border border-border/70 bg-card/90 text-left shadow-xl shadow-primary/5 backdrop-blur sm:mt-10">
                 <CardHeader className="border-b border-border/60 pb-5">
                     <div className="flex items-start justify-between gap-4">
@@ -94,6 +90,7 @@ export function HomePage() {
                         handleSubmit();
                     }}>
                         <UrlInput
+                            autoFocus
                             onChange={handleOnChange}
                             value={url}
                             placeholder="https://www.example.com"
@@ -139,7 +136,7 @@ export function HomePage() {
 
                         <Button type="submit"
                             className="mt-5 h-11 w-full rounded-xl text-sm shadow-sm shadow-primary/20"
-                            disabled={err != '' || url == '' || shortenMutation.isPending}
+                            disabled={url == '' || shortenMutation.isPending}
                         >
                             {shortenMutation.isPending ? (
                                 <>
