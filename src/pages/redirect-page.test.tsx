@@ -7,6 +7,7 @@ import {formatExpiry} from '@/utils/date';
 const SHORT_CODE = 'abc1234';
 const ORIGINAL_URL = 'https://example.com/a-very-long-page';
 const EXPIRY_DATE = '2027-01-02T03:04:05.000Z';
+const TAG = 'Instagram';
 const REDIRECT_DELAY_MS = 3000;
 
 function jsonResponse(body: unknown, status = 200) {
@@ -59,7 +60,7 @@ describe('RedirectPage', () => {
     });
 
     it('shows the destination url it fetched for the short code', async () => {
-        vi.mocked(fetch).mockResolvedValue(jsonResponse({url: ORIGINAL_URL, expiryDate: EXPIRY_DATE}));
+        vi.mocked(fetch).mockResolvedValue(jsonResponse({url: ORIGINAL_URL, expiryDate: EXPIRY_DATE, tag: TAG}));
 
         renderRedirectPage();
 
@@ -67,6 +68,7 @@ describe('RedirectPage', () => {
         expect(fetch).toHaveBeenCalledWith(`/api/urls/${SHORT_CODE}`, undefined);
         expect(screen.getByText('Redirecting you to...')).toBeInTheDocument();
         expect(screen.getByText(`Expires at ${formatExpiry(EXPIRY_DATE)}`)).toBeInTheDocument();
+        expect(screen.getByText(TAG)).toBeInTheDocument();
         expect(screen.queryByText(/URL expired/)).not.toBeInTheDocument();
     });
 
@@ -108,7 +110,7 @@ describe('RedirectPage', () => {
     });
 
     it('shows the expired notice and never redirects when the link has expired', async () => {
-        vi.mocked(fetch).mockResolvedValue(jsonResponse({expired: true, expiryDate: EXPIRY_DATE}, 400));
+        vi.mocked(fetch).mockResolvedValue(jsonResponse({expired: true, expiryDate: EXPIRY_DATE, tag: TAG}, 400));
         const navigated = captureLocationHref();
         const setTimeoutSpy = vi.spyOn(window, 'setTimeout');
 
@@ -117,6 +119,7 @@ describe('RedirectPage', () => {
         expect(await screen.findByText(/URL expired, create a new one/)).toBeInTheDocument();
         expect(screen.getByRole('link', {name: 'here'})).toHaveAttribute('href', '/');
         expect(screen.getByText(`Expired at ${formatExpiry(EXPIRY_DATE)}`)).toBeInTheDocument();
+        expect(screen.getByText(TAG)).toBeInTheDocument();
         expect(screen.queryByText('Redirecting you to...')).not.toBeInTheDocument();
 
         expect(setTimeoutSpy.mock.calls.some(([, delay]) => delay === REDIRECT_DELAY_MS)).toBe(false);

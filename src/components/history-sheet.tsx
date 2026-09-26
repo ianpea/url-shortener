@@ -83,6 +83,7 @@ export function HistorySheet() {
                                         </ItemTitle>
                                         <ItemDescription className='flex flex-col'>
                                             <span className='mt-2 flex min-w-0 items-center'>
+                                                {url.tag && <Badge variant='outline' className='mr-2 min-w-0 shrink'><span className="truncate text-xs">{url.tag}</span></Badge>}
                                                 {url.expiryDate && <Badge variant='outline' className='min-w-0 shrink'><ClockFading className='size-4 shrink-0' /> <span className="truncate text-xs text-gray-400">{formatExpiry(url.expiryDate)}</span></Badge>}
                                             </span>
                                         </ItemDescription>

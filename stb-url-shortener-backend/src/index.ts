@@ -17,6 +17,7 @@ const shortenUrlRequestSchema = z.object({
         .pipe(
             z.httpUrl()
         ),
+    tag: z.string().trim().min(1).optional(),
     expiryDate: z.iso.datetime().refine((date) => new Date(date) > new Date(), {
         error: "Expiry date must be in the future"
     }).optional()
@@ -31,7 +32,7 @@ app.post("/api/shorten", async (req, res) => {
         });
     }
 
-    const urlRecord = createShortUrl(result.data.url, result.data.expiryDate);
+    const urlRecord = createShortUrl(result.data.url, result.data.expiryDate, result.data.tag);
     if(!urlRecord) {
         return res.status(400).json({
             error: "Unable to generate short url, please try again",
@@ -79,10 +80,10 @@ app.get("/api/urls/:shortCode", (req, res) => {
     }
 
     if(result.expiryDate && new Date(result.expiryDate) <= new Date()) {
-        return res.status(400).json({expired: true, expiryDate: result.expiryDate});
+        return res.status(400).json({expired: true, expiryDate: result.expiryDate, tag: result.tag});
     }
 
-    res.json({url: result.originalUrl, expiryDate: result.expiryDate});
+    res.json({url: result.originalUrl, expiryDate: result.expiryDate, tag: result.tag});
 });
 
 const deleteSchema = z.object({id: z.number()});

@@ -22,3 +22,8 @@ db.exec(`
     deleted INTEGER NOT NULL DEFAULT 0
   )
 `);
+
+const urlColumns = db.prepare("PRAGMA table_info(urls)").all() as {name: string}[];
+if(!urlColumns.some((column) => column.name === "tag")) {
+    db.exec("ALTER TABLE urls ADD COLUMN tag TEXT");
+}

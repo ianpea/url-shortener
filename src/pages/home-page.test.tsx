@@ -3,6 +3,7 @@ import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {describe, expect, it, vi} from 'vitest';
 import {HomePage} from './home-page';
+import {shortenUrl} from '@/api/url-api';
 
 vi.mock('@/api/url-api', () => ({
     shortenUrl: vi.fn(),
@@ -45,5 +46,29 @@ describe('HomePage validation feedback', () => {
         await waitFor(() => {
             expect(screen.queryByText('URL cannot contain spaces')).not.toBeInTheDocument();
         });
+    });
+
+    it('shows the tag toggle before expiry and submits the optional tag', async () => {
+        vi.mocked(shortenUrl).mockResolvedValue({shortCode: 'abc1234'});
+        const user = renderHomePage();
+        const tagToggle = screen.getByRole('button', {name: 'Toggle tag'});
+        const expiryToggle = screen.getByRole('button', {name: 'Toggle expiry'});
+
+        expect(tagToggle.compareDocumentPosition(expiryToggle) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+        await user.click(tagToggle);
+        await user.click(expiryToggle);
+        const tagInput = screen.getByLabelText('Tag');
+        const expiryInput = screen.getByRole('button', {name: /Expiry date/i});
+        expect(tagInput.compareDocumentPosition(expiryInput) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+        await user.type(tagInput, 'Instagram');
+        await user.type(screen.getByPlaceholderText('https://www.example.com'), 'https://example.com/a/long/destination/path');
+        await user.click(screen.getByRole('button', {name: /Shorten my link/i}));
+
+        await waitFor(() => expect(shortenUrl).toHaveBeenCalledWith(
+            expect.objectContaining({tag: 'Instagram'}),
+            expect.anything(),
+        ));
     });
 });

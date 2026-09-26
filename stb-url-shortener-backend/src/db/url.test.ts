@@ -9,11 +9,12 @@ beforeEach(() => {
 
 describe('insertUrl + findUrlByShortCode', () => {
     it('stores a url and finds it again by its short code', () => {
-        insertUrl('https://example.com', 'abc1234', null);
+        insertUrl('https://example.com', 'abc1234', null, 'Instagram');
 
         expect(findUrlByShortCode('abc1234')).toMatchObject({
             originalUrl: 'https://example.com',
             expiryDate: null,
+            tag: 'Instagram',
         });
     });
 
@@ -55,7 +56,7 @@ function insertAt(originalUrl: string, shortCode: string, createdAt: string): vo
 
 describe('findUrls', () => {
     it('maps the stored row to camelCase fields', () => {
-        insertUrl('https://example.com', 'abc1234', '2030-01-01T00:00:00.000Z');
+        insertUrl('https://example.com', 'abc1234', '2030-01-01T00:00:00.000Z', 'Instagram');
 
         const [row] = findUrls(1, 5);
 
@@ -64,6 +65,7 @@ describe('findUrls', () => {
             shortCode: 'abc1234',
             originalUrl: 'https://example.com',
             expiryDate: '2030-01-01T00:00:00.000Z',
+            tag: 'Instagram',
         });
         expect(typeof row.createdAt).toBe('string');
     });

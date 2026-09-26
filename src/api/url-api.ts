@@ -5,6 +5,7 @@ export interface ShortenUrlRequest {
     url: string;
     password?: string; // encoded
     expiryDate?: string | null;
+    tag?: string;
 }
 
 export interface ShortenUrlResponse {

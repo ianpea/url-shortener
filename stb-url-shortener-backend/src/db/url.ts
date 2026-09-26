@@ -6,11 +6,13 @@ export interface UrlRecord {
     originalUrl: string;
     createdAt: string;
     expiryDate: string;
+    tag: string | null;
 }
 
 export interface UrlSummary {
     originalUrl: string;
     expiryDate: string;
+    tag: string | null;
 }
 
 export function findUrls(page: number, pageSize: number): UrlRecord[] {
@@ -18,7 +20,8 @@ export function findUrls(page: number, pageSize: number): UrlRecord[] {
     return db.prepare(`SELECT id, original_url AS originalUrl,
         short_code AS shortCode,
         created_at AS createdAt,
-        expiry_date AS expiryDate
+        expiry_date AS expiryDate,
+        tag
         FROM urls WHERE deleted = 0 ORDER BY created_at desc LIMIT ? OFFSET ?;`).all(pageSize, offset) as UrlRecord[];
 }
 
@@ -28,7 +31,7 @@ export function countUrls(): number {
 }
 
 export function findUrlByShortCode(shortCode: string): UrlSummary | undefined {
-    return db.prepare("SELECT original_url as originalUrl, expiry_date as expiryDate from urls where short_code = ? and deleted = 0").get(shortCode) as UrlSummary | undefined;
+    return db.prepare("SELECT original_url as originalUrl, expiry_date as expiryDate, tag from urls where short_code = ? and deleted = 0").get(shortCode) as UrlSummary | undefined;
 }
 
 export function deleteUrlById(id: number): boolean {
@@ -36,12 +39,13 @@ export function deleteUrlById(id: number): boolean {
     return result.changes > 0;
 }
 
-export function insertUrl(originalUrl: string, shortCode: string, expiryDate: string | null): UrlRecord | undefined {
-    return db.prepare(`INSERT INTO urls (original_url, short_code, expiry_date) VALUES (?,?,?) 
+export function insertUrl(originalUrl: string, shortCode: string, expiryDate: string | null, tag: string | null = null): UrlRecord | undefined {
+    return db.prepare(`INSERT INTO urls (original_url, short_code, expiry_date, tag) VALUES (?,?,?,?)
         RETURNING
         id,
         original_url AS originalUrl,
         short_code AS shortCode,
         created_at AS createdAt,
-        expiry_date AS expiryDate`).get(originalUrl, shortCode, expiryDate) as UrlRecord | undefined;
+        expiry_date AS expiryDate,
+        tag`).get(originalUrl, shortCode, expiryDate, tag) as UrlRecord | undefined;
 }
