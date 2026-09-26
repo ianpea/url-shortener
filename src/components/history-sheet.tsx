@@ -1,5 +1,5 @@
 import {useUrls} from "@/hooks/use-urls";
-import {RotateCcwClock, ClockFading, Copy, Trash, ArrowLeft, ArrowRight} from "lucide-react";
+import {RotateCcwClock, ClockFading, Copy, Trash, ArrowLeft, ArrowRight, Tag} from "lucide-react";
 import {useState} from "react";
 import {Item, ItemContent, ItemTitle, ItemDescription, ItemActions} from "./ui/item";
 import {Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription} from "./ui/sheet";
@@ -81,7 +81,7 @@ export function HistorySheet() {
                                         </ItemTitle>
                                         <ItemDescription className='flex flex-col'>
                                             <div className='mt-2 items-center space-y-2'>
-                                                {url.tag && <Badge variant='outline' className='mr-2 min-w-0 shrink'><span className="text-xs">{url.tag}</span></Badge>}
+                                                {url.tag && <Badge variant="outline" className="mt-3 text-primary"><Tag className="size-3" />{url.tag}</Badge>}
                                                 {url.expiryDate && <Badge variant='outline' className='min-w-0 shrink'><ClockFading className='size-4 shrink-0' /> <span className="text-xs text-gray-400">{formatExpiry(url.expiryDate)}</span></Badge>}
                                             </div>
                                         </ItemDescription>

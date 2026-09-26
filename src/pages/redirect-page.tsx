@@ -85,9 +85,9 @@ export function RedirectPage() {
                 {
                     !errorMessage && !expired &&
                     <>
-                        <p className="pb-1 animate-pulse">Redirecting you to...</p>
+                        <p className="pb-1 animate-pulse text-primary">Redirecting you to...</p>
                         <div className="flex w-full justify-center px-4 text-gray-400 break-all sm:w-1/3">{originalUrl}</div>
-                        {tag && <Badge variant="outline" className="mt-3"><Tag className="size-3" />{tag}</Badge>}
+                        {tag && <Badge variant="outline" className="mt-3 text-primary"><Tag className="size-3" />{tag}</Badge>}
                         {expiryDate && <p className="mt-3 text-xs text-gray-600">Expires at {formatExpiry(expiryDate)}</p>}
                         <div className="mt-4 flex w-full flex-col items-center gap-2">
                             <Skeleton className="h-4 w-3/4 max-w-md bg-gray-200" />
