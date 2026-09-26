@@ -89,50 +89,50 @@ export function HomePage() {
                     </div>
                 </CardHeader>
                 <CardContent className="pt-1">
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                }}>
-                    <UrlInput
-                        onChange={handleOnChange}
-                        value={url}
-                        placeholder="https://www.example.com"
-                    />
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
+                    }}>
+                        <UrlInput
+                            onChange={handleOnChange}
+                            value={url}
+                            placeholder="https://www.example.com"
+                        />
 
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                        <ToggleGroup multiple value={options} onValueChange={setOptions}>
-                            <Tooltip>
-                                <TooltipTrigger render={
-                                    <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="tag" aria-label="Toggle tag">
-                                        <Tag /> Tag
-                                    </ToggleGroupItem>
-                                } />
-                                <TooltipContent>Add a name to your link</TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger render={
-                                    <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="expiry" aria-label="Toggle expiry">
-                                        <ClockFading /> Expiry
-                                    </ToggleGroupItem>
-                                } />
-                                <TooltipContent>Set your link to expire</TooltipContent>
-                            </Tooltip>
-                        </ToggleGroup>
-                        <span className="text-xs text-muted-foreground">Optional settings</span>
-                    </div>
-
-                    {(options.includes('tag') || options.includes('expiry')) &&
-                        <div className='mt-4 flex w-full flex-col gap-3 rounded-xl border border-border/60 bg-muted/40 p-3'>
-                            {options.includes('tag') && <div className="flex flex-col gap-2">
-                                <Label htmlFor="tag">Tag</Label>
-                                <Input id="tag" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Instagram" />
-                            </div>}
-                            {options.includes('expiry') &&
-                            <DatePicker value={expiryDate} onChange={(e) => {setExpiryDate(e); setErr('');}} placeholder='Expiry date'></DatePicker>
-                            }
+                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                            <ToggleGroup multiple value={options} onValueChange={setOptions}>
+                                <Tooltip>
+                                    <TooltipTrigger render={
+                                        <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="tag" aria-label="Toggle tag">
+                                            <Tag /> Tag
+                                        </ToggleGroupItem>
+                                    } />
+                                    <TooltipContent>Add a name to your link</TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger render={
+                                        <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="expiry" aria-label="Toggle expiry">
+                                            <ClockFading /> Expiry
+                                        </ToggleGroupItem>
+                                    } />
+                                    <TooltipContent>Set your link to expire</TooltipContent>
+                                </Tooltip>
+                            </ToggleGroup>
+                            <span className="text-xs text-muted-foreground">Optional settings</span>
                         </div>
-                    }
-                    {err && <p role="alert" className="mt-3 text-xs text-destructive sm:text-sm">{err}</p>}
+
+                        {(options.includes('tag') || options.includes('expiry')) &&
+                            <div className='mt-4 flex w-full flex-col gap-3 rounded-xl border border-border/60 bg-muted/40 p-3'>
+                                {options.includes('tag') && <div className="flex flex-col gap-2">
+                                    <Label htmlFor="tag">Tag</Label>
+                                    <Input id="tag" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Instagram" />
+                                </div>}
+                                {options.includes('expiry') &&
+                                    <DatePicker value={expiryDate} onChange={(e) => {setExpiryDate(e); setErr('');}} placeholder='Expiry date'></DatePicker>
+                                }
+                            </div>
+                        }
+                        {err && <p role="alert" className="mt-3 text-xs text-destructive sm:text-sm">{err}</p>}
 
                         <Button type="submit"
                             className="mt-5 h-11 w-full rounded-xl text-sm shadow-sm shadow-primary/20"
@@ -146,7 +146,7 @@ export function HomePage() {
                                 <><Zap className="size-4" /> Shorten my link</>
                             )}{' '}
                         </Button>
-                </form>
+                    </form>
                 </CardContent>
             </Card>
 
@@ -156,47 +156,47 @@ export function HomePage() {
             <p className="mt-5 text-xs text-muted-foreground">No account needed · Your links stay under your control</p>
         </section>
 
-            <StbAlertDialog
-                open={dialog}
-                title={'Shortened URL is longer'}
-                description={
-                    <div className="space-y-4">
-                        <p>
-                            The generated URL will be <b>longer</b> than your original URL.
-                        </p>
+        <StbAlertDialog
+            open={dialog}
+            title={'Shortened URL is longer'}
+            description={
+                <div className="space-y-4">
+                    <div>
+                        The generated URL will be <b>longer</b> than your original URL.
+                    </div>
 
-                        <div className="rounded-md border bg-muted/50 p-3 space-y-3">
-                            <div>
-                                <p className="mb-1 text-xs text-muted-foreground">
-                                    Original URL
-                                </p>
-                                <p className="break-all text-sm font-medium">
-                                    {normalizeUrl(url)}
-                                </p>
-                            </div>
-
-                            <Separator />
-
-                            <div>
-                                <p className="mb-1 text-xs text-muted-foreground">
-                                    Generated URL
-                                </p>
-                                <p className="break-all text-sm font-medium">
-                                    {sampleGeneratedUrl}
-                                </p>
-                            </div>
+                    <div className="rounded-md border bg-muted/50 p-3 space-y-3">
+                        <div>
+                            <p className="mb-1 text-xs text-muted-foreground">
+                                Original URL
+                            </p>
+                            <p className="break-all text-sm font-medium">
+                                {normalizeUrl(url)}
+                            </p>
                         </div>
 
-                        <p>Do you want to continue?</p>
+                        <Separator />
+
+                        <div>
+                            <p className="mb-1 text-xs text-muted-foreground">
+                                Generated URL
+                            </p>
+                            <p className="break-all text-sm font-medium">
+                                {sampleGeneratedUrl}
+                            </p>
+                        </div>
                     </div>
-                }
-                onConfirm={() => {
-                    handleSubmit(true);
-                    setDialog(false);
-                }}
-                onClose={() => {
-                    setDialog(false);
-                }}
-            ></StbAlertDialog>
+
+                    <p>Do you want to continue?</p>
+                </div>
+            }
+            onConfirm={() => {
+                handleSubmit(true);
+                setDialog(false);
+            }}
+            onClose={() => {
+                setDialog(false);
+            }}
+        ></StbAlertDialog>
     </div>;
 }

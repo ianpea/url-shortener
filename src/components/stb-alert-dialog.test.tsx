@@ -11,7 +11,7 @@ function renderDialog(props: Partial<ComponentProps<typeof StbAlertDialog>> = {}
         <StbAlertDialog
             open
             title="Shortened URL is longer"
-            description={<p>The generated URL will be longer.</p>}
+            description={<div>The generated URL will be longer.</div>}
             onConfirm={onConfirm}
             onClose={onClose}
             {...props}
