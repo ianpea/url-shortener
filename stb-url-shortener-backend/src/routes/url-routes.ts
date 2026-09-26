@@ -1,12 +1,12 @@
 import {Router} from "express";
-import {countUrls, deleteUrlById, findUrlByShortCode, findUrls} from "../db/url";
+import {countUrls, deleteUrlById, findUrlByShortCode, findUrls} from "../db/url.js";
 import {
     deleteUrlRequestSchema,
     getUrlRequestSchema,
     paginationSchema,
     shortenUrlRequestSchema
-} from "../schemas/url-schemas";
-import {createShortUrl} from "../services/url-service";
+} from "../schemas/url-schemas.js";
+import {createShortUrl} from "../services/url-service.js";
 
 export const urlRouter = Router();
 

@@ -1,5 +1,5 @@
-import {insertUrl, type UrlRecord} from "../db/url";
-import {generateShortCode} from "../utils/short-code";
+import {insertUrl, type UrlRecord} from "../db/url.js";
+import {generateShortCode} from "../utils/short-code.js";
 
 const MAX_RETRIES = 3;
 

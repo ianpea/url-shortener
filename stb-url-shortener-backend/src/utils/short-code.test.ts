@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {CHARACTERS, SHORT_CODE_LEN} from '../constants';
-import {generateShortCode} from './short-code';
+import {CHARACTERS, SHORT_CODE_LEN} from '../constants.js';
+import {generateShortCode} from './short-code.js';
 
 // `randomInt` is wrapped rather than replaced: the tests that pin exact alphabet
 // indices get a predictable code, everything else keeps genuine randomness.

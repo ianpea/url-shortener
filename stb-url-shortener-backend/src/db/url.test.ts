@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, it} from 'vitest';
-import {db} from './database';
-import {countUrls, deleteUrlById, findUrlByShortCode, findUrls, insertUrl} from './url';
+import {db} from './database.js';
+import {countUrls, deleteUrlById, findUrlByShortCode, findUrls, insertUrl} from './url.js';
 
 // vitest.config.ts points DB_PATH at ':memory:', so this is a throwaway database.
 beforeEach(() => {

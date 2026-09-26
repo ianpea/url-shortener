@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {insertUrl, type UrlRecord} from '../db/url';
-import {generateShortCode} from '../utils/short-code';
-import {createShortUrl} from './url-service';
+import {insertUrl, type UrlRecord} from '../db/url.js';
+import {generateShortCode} from '../utils/short-code.js';
+import {createShortUrl} from './url-service.js';
 
 // The service is pure orchestration, so the database and the code generator are stubbed.
 vi.mock('../db/url', () => ({insertUrl: vi.fn()}));

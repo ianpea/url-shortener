@@ -1,9 +1,9 @@
 import request from 'supertest';
 import {beforeEach, describe, expect, it} from 'vitest';
-import {app} from './app';
-import {db} from './db/database';
-import {insertUrl} from './db/url';
-import {normalizeUrl} from './utils/url';
+import {app} from './app.js';
+import {db} from './db/database.js';
+import {insertUrl} from './db/url.js';
+import {normalizeUrl} from './utils/url.js';
 
 // supertest talks to `app` directly, so no port is bound and no real server is needed.
 beforeEach(() => {

@@ -1,5 +1,5 @@
 import z from "zod";
-import {normalizeUrl} from "../utils/url";
+import {normalizeUrl} from "../utils/url.js";
 
 export const shortenUrlRequestSchema = z.object({
     url: z.string()
