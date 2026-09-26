@@ -12,17 +12,19 @@ import {
 } from "@/components/ui/popover";
 
 interface DatePickerProps {
+    id?: string;
     value?: Date;
     onChange: (date: Date | undefined) => void;
     placeholder: string;
 }
 
-export function DatePicker({value, onChange, placeholder}: DatePickerProps) {
+export function DatePicker({id, value, onChange, placeholder}: DatePickerProps) {
     return (
         <Popover>
             <PopoverTrigger
                 render={
                     <Button
+                        id={id}
                         variant="outline"
                         data-empty={!value}
                         className="text-xs sm:text-sm w-full justify-start text-left font-normal data-[empty=true]:text-muted-foreground"

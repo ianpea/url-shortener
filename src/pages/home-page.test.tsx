@@ -59,8 +59,9 @@ describe('HomePage validation feedback', () => {
         await user.click(tagToggle);
         await user.click(expiryToggle);
         const tagInput = screen.getByLabelText('Tag');
-        const expiryInput = screen.getByRole('button', {name: /Expiry date/i});
+        const expiryInput = screen.getByLabelText('Expiry date');
         expect(tagInput.compareDocumentPosition(expiryInput) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(expiryInput).toHaveTextContent('Select a date');
 
         await user.type(tagInput, 'Instagram');
         await user.type(screen.getByPlaceholderText('https://www.example.com'), 'https://example.com/a/long/destination/path');
