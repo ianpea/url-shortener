@@ -11,11 +11,11 @@ function isUniqueConstraintError(error: unknown): boolean {
     );
 }
 
-export function createShortUrl(originalUrl: string, expiryDate: string | undefined): UrlRecord | undefined {
+export function createShortUrl(originalUrl: string, expiryDate: string | undefined, tag?: string): UrlRecord | undefined {
     for(let i = 0; i < MAX_RETRIES; i++) {
         const shortCode = generateShortCode();
         try {
-            const urlRecord = insertUrl(originalUrl, shortCode, expiryDate ?? null);
+            const urlRecord = insertUrl(originalUrl, shortCode, expiryDate ?? null, tag ?? null);
             return urlRecord;
         } catch(error) {
             if(!isUniqueConstraintError(error)) {

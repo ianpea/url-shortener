@@ -21,6 +21,7 @@ const record: UrlRecord = {
     originalUrl: 'https://example.com',
     createdAt: '2026-01-01 00:00:00',
     expiryDate: '2030-01-01T00:00:00.000Z',
+    tag: 'Instagram',
 };
 
 describe('generateShortUrl', () => {
@@ -32,10 +33,10 @@ describe('generateShortUrl', () => {
         generateShortCodeMock.mockReturnValue('abc1234');
         insertUrlMock.mockReturnValue(record);
 
-        const result = createShortUrl('https://example.com', '2030-01-01T00:00:00.000Z');
+        const result = createShortUrl('https://example.com', '2030-01-01T00:00:00.000Z', 'Instagram');
 
         expect(result).toBe(record);
-        expect(insertUrlMock).toHaveBeenCalledWith('https://example.com', 'abc1234', '2030-01-01T00:00:00.000Z');
+        expect(insertUrlMock).toHaveBeenCalledWith('https://example.com', 'abc1234', '2030-01-01T00:00:00.000Z', 'Instagram');
     });
 
     it('rethrows any error that is not a unique constraint violation', () => {
@@ -65,6 +66,6 @@ describe('generateShortUrl', () => {
         const result = createShortUrl('https://example.com', undefined);
 
         expect(result).toBe(record);
-        expect(insertUrlMock).toHaveBeenCalledWith('https://example.com', 'abc1234', null);
+        expect(insertUrlMock).toHaveBeenCalledWith('https://example.com', 'abc1234', null, null);
     });
 });

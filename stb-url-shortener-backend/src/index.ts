@@ -17,6 +17,7 @@ const shortenUrlRequestSchema = z.object({
         .pipe(
             z.httpUrl()
         ),
+    tag: z.string().trim().min(1).optional(),
     expiryDate: z.iso.datetime().refine((date) => new Date(date) > new Date(), {
         error: "Expiry date must be in the future"
     }).optional()
@@ -31,7 +32,7 @@ app.post("/api/shorten", async (req, res) => {
         });
     }
 
-    const urlRecord = createShortUrl(result.data.url, result.data.expiryDate);
+    const urlRecord = createShortUrl(result.data.url, result.data.expiryDate, result.data.tag);
     if(!urlRecord) {
         return res.status(400).json({
             error: "Unable to generate short url, please try again",

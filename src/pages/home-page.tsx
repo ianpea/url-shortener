@@ -6,7 +6,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '../comp
 import UrlInput from '../components/url-input';
 import {ToggleGroup, ToggleGroupItem} from '../components/ui/toggle-group';
 import {StbAlertDialog} from '../components/stb-alert-dialog';
-import {ClockFading, Link2, LockKeyhole, Sparkles, Zap} from 'lucide-react';
+import {ClockFading, Link2, LockKeyhole, Sparkles, Tag, Zap} from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipTrigger} from '../components/ui/tooltip';
 import type {ShortenUrlResponse} from '../api/url-api';
 import {copyShortUrl, normalizeUrl, validate} from '../utils/url';
@@ -16,6 +16,8 @@ import {DatePicker} from '@/components/ui/date-picker';
 import {HistorySheet} from '@/components/history-sheet';
 import {SHORT_CODE_LEN} from '@/constants';
 import {Separator} from '@/components/ui/separator';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
 
 export function HomePage() {
     const [url, setUrl] = useState('');
@@ -23,6 +25,7 @@ export function HomePage() {
     const shortenMutation = useShortenUrl();
     const [dialog, setDialog] = useState(false);
     const [expiryDate, setExpiryDate] = useState<Date>();
+    const [tag, setTag] = useState('');
     const [options, setOptions] = useState<string[]>([]);
     const sampleGeneratedUrl = (window.location.origin) + '/' + "*".repeat(SHORT_CODE_LEN);
 
@@ -44,6 +47,7 @@ export function HomePage() {
 
         shortenMutation.mutate({
             url,
+            tag: options.includes('tag') && tag.trim() ? tag.trim() : undefined,
             expiryDate: expiryDate ? expiryDate.toISOString() : undefined
         }, {
             onSuccess: async (data: ShortenUrlResponse) => {
@@ -99,6 +103,14 @@ export function HomePage() {
                         <ToggleGroup multiple value={options} onValueChange={setOptions}>
                             <Tooltip>
                                 <TooltipTrigger render={
+                                    <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="tag" aria-label="Toggle tag">
+                                        <Tag /> Tag
+                                    </ToggleGroupItem>
+                                } />
+                                <TooltipContent>Add a name to your link</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger render={
                                     <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="expiry" aria-label="Toggle expiry">
                                         <ClockFading /> Expiry
                                     </ToggleGroupItem>
@@ -109,9 +121,15 @@ export function HomePage() {
                         <span className="text-xs text-muted-foreground">Optional settings</span>
                     </div>
 
-                    {options.includes('expiry') &&
-                        <div className='mt-4 w-full rounded-xl border border-border/60 bg-muted/40 p-3'>
+                    {(options.includes('tag') || options.includes('expiry')) &&
+                        <div className='mt-4 flex w-full flex-col gap-3 rounded-xl border border-border/60 bg-muted/40 p-3'>
+                            {options.includes('tag') && <div className="flex flex-col gap-2">
+                                <Label htmlFor="tag">Tag</Label>
+                                <Input id="tag" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Instagram" />
+                            </div>}
+                            {options.includes('expiry') &&
                             <DatePicker value={expiryDate} onChange={(e) => {setExpiryDate(e); setErr('');}} placeholder='Expiry date'></DatePicker>
+                            }
                         </div>
                     }
                     {err && <p role="alert" className="mt-3 text-xs text-destructive sm:text-sm">{err}</p>}

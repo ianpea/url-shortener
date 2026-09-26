@@ -63,6 +63,18 @@ describe('POST /api/shorten', () => {
         expect(fetched.status).toBe(200);
         expect(fetched.body).toEqual({url: 'https://abc.com', expiryDate});
     });
+
+    it('stores an optional trimmed tag and returns it in the URL history', async () => {
+        const created = await request(app).post('/api/shorten').send({url: 'abc.com', tag: '  Instagram  '});
+        expect(created.status).toBe(201);
+
+        const history = await request(app).get('/api/urls');
+
+        expect(history.body.items[0]).toMatchObject({
+            originalUrl: 'https://abc.com',
+            tag: 'Instagram',
+        });
+    });
 });
 
 describe('GET /api/urls/:shortCode', () => {
