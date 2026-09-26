@@ -143,7 +143,7 @@ export function HomePage() {
                                     <Spinner></Spinner> Shortening...
                                 </>
                             ) : (
-                                <><Zap className="size-4" /> Shorten my link</>
+                                <><Zap className="size-4" /> Shorten</>
                             )}{' '}
                         </Button>
                     </form>
