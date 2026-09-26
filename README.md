@@ -18,6 +18,13 @@ Full-stack URL shortener built for the assessment using React, TypeScript, Expre
 **Backend:** Node.js, Express, TypeScript, SQLite, Zod  
 **Testing:** Vitest, Testing Library, Supertest
 
+## Requirements
+
+Developed and tested with:
+
+- Node.js 26.8.2
+- npm 11.6.2
+
 ## Development
 
 Install and start the frontend development server from the repository root:
