@@ -48,6 +48,7 @@ describe("shorten then resolve", () => {
 
         await expect(lookupUrl(shortCode)).resolves.toEqual({
             url: "https://example.com/some/long/path",
+            tag: null,
             expiryDate: null,
         });
     });
@@ -59,6 +60,7 @@ describe("shorten then resolve", () => {
 
         await expect(lookupUrl(shortCode)).resolves.toEqual({
             url: "https://example.com/expiring",
+            tag: null,
             expiryDate,
         });
     });
@@ -94,7 +96,7 @@ describe("resolve failures", () => {
         const error = await captureApiError(() => lookupUrl("exp1234"));
 
         expect(error.status).toBe(400);
-        expect(error.body).toEqual({expired: true, expiryDate});
+        expect(error.body).toEqual({expired: true, expiryDate, tag: null});
     });
     it("rejects localhost url", async () => {
         const error = await captureApiError(() => shortenUrl({url: "localhost:5173/path1"}));
