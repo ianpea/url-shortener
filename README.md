@@ -6,7 +6,7 @@ Full-stack URL shortener built for the assessment using React, TypeScript, Expre
 
 - Shorten valid URLs into 7-character short codes
 - Normalize URLs without a scheme
-- Optional expiry date and tags
+- Optional expiry date and name tagging for the URL
 - Redirect short links to the original URL
 - History with pagination
 - Copy and delete saved links
