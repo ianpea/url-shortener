@@ -34,6 +34,12 @@ export function HomePage() {
         setErr('');
     }
 
+    function handleOptionsChange(nextOptions: string[]) {
+        if(!nextOptions.includes('tag')) setTag('');
+        if(!nextOptions.includes('expiry')) setExpiryDate(undefined);
+        setOptions(nextOptions);
+    }
+
     function handleSubmit(skipLengthWarning: boolean = false) {
         const validationError = validate(url);
         setErr(validationError);
@@ -48,7 +54,7 @@ export function HomePage() {
         shortenMutation.mutate({
             url,
             tag: options.includes('tag') && tag.trim() ? tag.trim() : undefined,
-            expiryDate: expiryDate ? expiryDate.toISOString() : undefined
+            expiryDate: options.includes('expiry') && expiryDate ? expiryDate.toISOString() : undefined
         }, {
             onSuccess: async (data: ShortenUrlResponse) => {
                 const shortUrl = await copyShortUrl(data.shortCode);
@@ -97,7 +103,7 @@ export function HomePage() {
                         />
 
                         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                            <ToggleGroup multiple value={options} onValueChange={setOptions}>
+                            <ToggleGroup multiple value={options} onValueChange={handleOptionsChange}>
                                 <Tooltip>
                                     <TooltipTrigger render={
                                         <ToggleGroupItem className='rounded-xl px-3 aria-pressed:border-primary/30 aria-pressed:bg-primary/10 aria-pressed:text-primary' variant='outline' value="tag" aria-label="Toggle tag">

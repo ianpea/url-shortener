@@ -74,6 +74,42 @@ describe('HomePage validation feedback', () => {
         ));
     });
 
+    it('clears optional values when their settings are toggled off', async () => {
+        vi.mocked(shortenUrl).mockResolvedValue({shortCode: 'abc1234'});
+        const user = renderHomePage();
+        const tagToggle = screen.getByRole('button', {name: 'Toggle tag'});
+        const expiryToggle = screen.getByRole('button', {name: 'Toggle expiry'});
+
+        await user.click(tagToggle);
+        await user.type(screen.getByLabelText('Tag'), 'Campaign');
+        await user.click(expiryToggle);
+        await user.click(screen.getByLabelText('Expiry date'));
+
+        const availableDate = document.querySelector<HTMLButtonElement>('[data-day]:not(:disabled)');
+        expect(availableDate).not.toBeNull();
+        await user.click(availableDate!);
+
+        await user.click(tagToggle);
+        await user.click(expiryToggle);
+
+        // Toggling the settings back on confirms that their state was discarded,
+        // rather than merely hidden from the form.
+        await user.click(tagToggle);
+        await user.click(expiryToggle);
+        expect(screen.getByLabelText('Tag')).toHaveValue('');
+        expect(screen.getByLabelText('Expiry date')).toHaveTextContent('Select a date');
+
+        await user.click(tagToggle);
+        await user.click(expiryToggle);
+        await user.type(screen.getByPlaceholderText('https://www.example.com'), 'https://example.com/a/long/destination/path');
+        await user.click(screen.getByRole('button', {name: /Shorten/i}));
+
+        await waitFor(() => expect(shortenUrl).toHaveBeenCalledWith(
+            expect.objectContaining({tag: undefined, expiryDate: undefined}),
+            expect.anything(),
+        ));
+    });
+
     it('keeps the submit button enabled after a failed request so it can be retried', async () => {
         vi.mocked(shortenUrl).mockRejectedValue(new Error('Bad gateway'));
         const user = renderHomePage();
