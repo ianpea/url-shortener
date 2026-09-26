@@ -23,7 +23,7 @@ const shortenUrlRequestSchema = z.object({
     }).optional()
 });
 app.post("/api/shorten", async (req, res) => {
-    await sleep();
+    await simulateLatency();
     const result = shortenUrlRequestSchema.safeParse(req.body);
     // console.log(normalizeUrl(req.body.url));
     if(!result.success) {
@@ -47,7 +47,7 @@ const paginationSchema = z.object({
     pageSize: z.coerce.number().int().min(1).max(100).default(5),
 });
 app.get("/api/urls", async (req, res) => {
-    await sleep(250);
+    await simulateLatency();
 
     const parseResult = paginationSchema.safeParse(req.query);
     if(!parseResult.success) {
@@ -88,7 +88,7 @@ app.get("/api/urls/:shortCode", (req, res) => {
 
 const deleteSchema = z.object({id: z.number()});
 app.delete("/api/url", async (req, res) => {
-    await sleep(1000);
+    await simulateLatency();
     const parseResult = deleteSchema.safeParse(req.body);
     if(!parseResult.success) {
         return res.status(400).json({
@@ -108,12 +108,13 @@ app.delete("/api/url", async (req, res) => {
 // Skipped while running tests so importing `app` doesn't bind the port.
 if(process.env.NODE_ENV !== "test") {
     app.listen(PORT, () => {
-        console.log(`Session started at http:;//localhost:${PORT}`);
+        console.log(`Session started at http:://localhost:${PORT}`);
     });
 }
 
-function sleep(ms: number = 250): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+// Simulate network latency so loading states are observable during the demo.
+async function simulateLatency(ms: number = 250): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export function normalizeUrl(url: string): string {
