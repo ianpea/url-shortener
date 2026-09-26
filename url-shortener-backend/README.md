@@ -23,7 +23,7 @@ Node.js + Express API for the URL shortener assessment.
 Developed and tested with:
 
 - Node.js 26.8.2
-- npm 11.6.2
+- npm 12.0.2
 
 ## Development
 
