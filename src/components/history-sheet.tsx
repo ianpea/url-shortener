@@ -75,17 +75,15 @@ export function HistorySheet() {
                         {!historyQuery.isFetching && historyQuery.data?.items.map(url => (
                             <div className="w-full" key={url.id}>
                                 <Item variant="outline">
-                                    {/* min-w-0 lets this column shrink instead of forcing the
-                                        flex-wrap parent to push ItemActions onto its own row. */}
                                     <ItemContent className="min-w-0">
                                         <ItemTitle className="line-clamp-none break-all text-xs sm:text-sm text-gray-700 dark:text-gray-200 ">
                                             <span>{url.originalUrl}</span>
                                         </ItemTitle>
                                         <ItemDescription className='flex flex-col'>
-                                            <span className='mt-2 flex min-w-0 items-center'>
-                                                {url.tag && <Badge variant='outline' className='mr-2 min-w-0 shrink'><span className="truncate text-xs">{url.tag}</span></Badge>}
-                                                {url.expiryDate && <Badge variant='outline' className='min-w-0 shrink'><ClockFading className='size-4 shrink-0' /> <span className="truncate text-xs text-gray-400">{formatExpiry(url.expiryDate)}</span></Badge>}
-                                            </span>
+                                            <div className='mt-2 items-center space-y-2'>
+                                                {url.tag && <Badge variant='outline' className='mr-2 min-w-0 shrink'><span className="text-xs">{url.tag}</span></Badge>}
+                                                {url.expiryDate && <Badge variant='outline' className='min-w-0 shrink'><ClockFading className='size-4 shrink-0' /> <span className="text-xs text-gray-400">{formatExpiry(url.expiryDate)}</span></Badge>}
+                                            </div>
                                         </ItemDescription>
                                     </ItemContent>
                                     <ItemActions className="flex-col sm:flex-row">

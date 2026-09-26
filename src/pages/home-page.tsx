@@ -6,7 +6,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '../comp
 import UrlInput from '../components/url-input';
 import {ToggleGroup, ToggleGroupItem} from '../components/ui/toggle-group';
 import {StbAlertDialog} from '../components/stb-alert-dialog';
-import {ClockFading, Link2, LockKeyhole, Tag, Zap} from 'lucide-react';
+import {ClockFading, Link2, LockKeyholeOpen, Tag, Zap} from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipTrigger} from '../components/ui/tooltip';
 import type {ShortenUrlResponse} from '../api/url-api';
 import {copyShortUrl, normalizeUrl, validate} from '../utils/url';
@@ -80,7 +80,7 @@ export function HomePage() {
                             <CardDescription className="mt-1.5">Enter any valid web address to get started.</CardDescription>
                         </div>
                         <span className="hidden items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground sm:flex">
-                            <LockKeyhole className="size-3" /> Private
+                            <LockKeyholeOpen className="size-3" /> No account required
                         </span>
                     </div>
                 </CardHeader>
@@ -153,7 +153,6 @@ export function HomePage() {
             <div className="mt-6 flex justify-center">
                 <HistorySheet></HistorySheet>
             </div>
-            <p className="mt-5 text-xs text-muted-foreground">No account needed · Your links stay under your control</p>
         </section>
 
         <StbAlertDialog
