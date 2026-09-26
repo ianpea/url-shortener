@@ -66,7 +66,7 @@ describe('HomePage validation feedback', () => {
 
         await user.type(tagInput, 'Instagram');
         await user.type(screen.getByPlaceholderText('https://www.example.com'), 'https://example.com/a/long/destination/path');
-        await user.click(screen.getByRole('button', {name: /Shorten my link/i}));
+        await user.click(screen.getByRole('button', {name: /Shorten/i}));
 
         await waitFor(() => expect(shortenUrl).toHaveBeenCalledWith(
             expect.objectContaining({tag: 'Instagram'}),
@@ -79,9 +79,9 @@ describe('HomePage validation feedback', () => {
         const user = renderHomePage();
 
         await user.type(screen.getByPlaceholderText('https://www.example.com'), 'https://example.com/a/long/destination/path');
-        await user.click(screen.getByRole('button', {name: /Shorten my link/i}));
+        await user.click(screen.getByRole('button', {name: /Shorten/i}));
 
         expect(await screen.findByText('Bad gateway')).toBeInTheDocument();
-        expect(screen.getByRole('button', {name: /Shorten my link/i})).toBeEnabled();
+        expect(screen.getByRole('button', {name: /Shorten/i})).toBeEnabled();
     });
 });
