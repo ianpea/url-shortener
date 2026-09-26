@@ -122,13 +122,16 @@ export function HomePage() {
                         </div>
 
                         {(options.includes('tag') || options.includes('expiry')) &&
-                            <div className='mt-4 flex w-full flex-col gap-3 rounded-xl border border-border/60 bg-muted/40 p-3'>
+                            <div className={`mt-4 grid w-full gap-4 rounded-xl border border-border/60 bg-muted/40 p-4 ${options.includes('tag') && options.includes('expiry') ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
                                 {options.includes('tag') && <div className="flex flex-col gap-2">
                                     <Label htmlFor="tag">Tag</Label>
                                     <Input id="tag" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Instagram" />
                                 </div>}
                                 {options.includes('expiry') &&
-                                    <DatePicker value={expiryDate} onChange={(e) => {setExpiryDate(e); setErr('');}} placeholder='Expiry date'></DatePicker>
+                                    <div className="flex flex-col gap-2">
+                                        <Label htmlFor="expiry-date">Expiry date</Label>
+                                        <DatePicker id="expiry-date" value={expiryDate} onChange={(e) => {setExpiryDate(e); setErr('');}} placeholder="Select a date" />
+                                    </div>
                                 }
                             </div>
                         }
