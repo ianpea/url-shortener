@@ -30,7 +30,7 @@ npm run dev
 Backend:
 
 ```bash
-cd stb-url-shortener-backend
+cd url-shortener-backend
 npm install
 npm run dev
 ```
@@ -45,7 +45,7 @@ npm test
 ```
 
 ```bash
-cd stb-url-shortener-backend
+cd url-shortener-backend
 npm test
 ```
 
@@ -60,6 +60,6 @@ npm run build
 ```
 
 ```bash
-cd stb-url-shortener-backend
+cd url-shortener-backend
 npm run build
 ```

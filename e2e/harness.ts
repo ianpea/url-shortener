@@ -1,7 +1,7 @@
 import type {Server} from "node:http";
 import type {AddressInfo} from "node:net";
-import {db} from "../stb-url-shortener-backend/src/db/database";
-import {app} from "../stb-url-shortener-backend/src/app";
+import {db} from "../url-shortener-backend/src/db/database";
+import {app} from "../url-shortener-backend/src/app";
 
 let server: Server | undefined;
 let baseUrl = "";
