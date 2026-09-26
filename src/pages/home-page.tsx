@@ -125,7 +125,7 @@ export function HomePage() {
                             <div className={`mt-4 grid w-full gap-4 rounded-xl border border-border/60 bg-muted/40 p-4 ${options.includes('tag') && options.includes('expiry') ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
                                 {options.includes('tag') && <div className="flex flex-col gap-2">
                                     <Label htmlFor="tag">Tag</Label>
-                                    <Input id="tag" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. social-campaign" />
+                                    <Input id="tag" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="e.g. Instagram" />
                                 </div>}
                                 {options.includes('expiry') &&
                                     <div className="flex flex-col gap-2">

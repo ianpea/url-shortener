@@ -61,6 +61,7 @@ describe('HomePage validation feedback', () => {
         const tagInput = screen.getByLabelText('Tag');
         const expiryInput = screen.getByLabelText('Expiry date');
         expect(tagInput.compareDocumentPosition(expiryInput) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(tagInput).toHaveAttribute('placeholder', 'e.g. Instagram');
         expect(expiryInput).toHaveTextContent('Select a date');
 
         await user.type(tagInput, 'Instagram');
