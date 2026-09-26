@@ -18,7 +18,7 @@ Node.js + Express API for the URL shortener assessment.
 - Zod validation
 - Vitest + Supertest
 
-## Run
+## Development
 
 ```bash
 npm install
@@ -27,14 +27,24 @@ npm run dev
 
 API runs on `http://localhost:3000`.
 
+## Type-check
+
+```bash
+npm run typecheck
+```
+
 ## Test
 
 ```bash
 npm test
 ```
 
-## Build
+## Production
 
 ```bash
 npm run build
+npm start
 ```
+
+The build compiles the backend TypeScript source into `dist/`, and the start
+command runs the compiled `dist/index.js` application with Node.js.
