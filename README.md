@@ -66,13 +66,6 @@ Create the optimized frontend production build:
 
 ```bash
 npm run build
-```
-
-Vite outputs the production files to `dist/`.
-
-Preview that built frontend locally:
-
-```bash
 npm run preview
 ```
 
