@@ -4,7 +4,7 @@ export function showToast(title: string, description: string, type: "default" | 
     toast.add({
         title,
         description: description,
-        timeout: 3500,
+        timeout: 2500,
         type
     });
 }
