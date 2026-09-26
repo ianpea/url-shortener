@@ -61,7 +61,7 @@ describe('POST /api/shorten', () => {
         const fetched = await request(app).get(`/api/urls/${created.body.shortCode}`);
 
         expect(fetched.status).toBe(200);
-        expect(fetched.body).toEqual({url: 'https://abc.com', expiryDate});
+        expect(fetched.body).toEqual({url: 'https://abc.com', expiryDate, tag: null});
     });
 
     it('stores an optional trimmed tag and returns it in the URL history', async () => {
@@ -74,6 +74,9 @@ describe('POST /api/shorten', () => {
             originalUrl: 'https://abc.com',
             tag: 'Instagram',
         });
+
+        const fetched = await request(app).get(`/api/urls/${created.body.shortCode}`);
+        expect(fetched.body).toEqual({url: 'https://abc.com', expiryDate: null, tag: 'Instagram'});
     });
 });
 
@@ -91,7 +94,7 @@ describe('GET /api/urls/:shortCode', () => {
         const response = await request(app).get('/api/urls/exp1234');
 
         expect(response.status).toBe(400);
-        expect(response.body).toEqual({expired: true, expiryDate});
+        expect(response.body).toEqual({expired: true, expiryDate, tag: null});
     });
 
     it('returns the stored url and expiry date for a valid short code', async () => {
@@ -100,7 +103,7 @@ describe('GET /api/urls/:shortCode', () => {
         const response = await request(app).get('/api/urls/ok12345');
 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual({url: 'https://example.com', expiryDate: null});
+        expect(response.body).toEqual({url: 'https://example.com', expiryDate: null, tag: null});
     });
 
     it('returns 400 when the short code is well formed but unknown', async () => {

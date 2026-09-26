@@ -9,11 +9,12 @@ beforeEach(() => {
 
 describe('insertUrl + findUrlByShortCode', () => {
     it('stores a url and finds it again by its short code', () => {
-        insertUrl('https://example.com', 'abc1234', null);
+        insertUrl('https://example.com', 'abc1234', null, 'Instagram');
 
         expect(findUrlByShortCode('abc1234')).toMatchObject({
             originalUrl: 'https://example.com',
             expiryDate: null,
+            tag: 'Instagram',
         });
     });
 

@@ -12,6 +12,7 @@ export interface UrlRecord {
 export interface UrlSummary {
     originalUrl: string;
     expiryDate: string;
+    tag: string | null;
 }
 
 export function findUrls(page: number, pageSize: number): UrlRecord[] {
@@ -30,7 +31,7 @@ export function countUrls(): number {
 }
 
 export function findUrlByShortCode(shortCode: string): UrlSummary | undefined {
-    return db.prepare("SELECT original_url as originalUrl, expiry_date as expiryDate from urls where short_code = ? and deleted = 0").get(shortCode) as UrlSummary | undefined;
+    return db.prepare("SELECT original_url as originalUrl, expiry_date as expiryDate, tag from urls where short_code = ? and deleted = 0").get(shortCode) as UrlSummary | undefined;
 }
 
 export function deleteUrlById(id: number): boolean {
