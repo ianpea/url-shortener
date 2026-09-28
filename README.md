@@ -1,6 +1,7 @@
 # URL Shortener
 
 Full-stack URL shortener built for the assessment using React, TypeScript, Express, and SQLite.
+<img width="1680" height="899" alt="localhost_5173_ (3)" src="https://github.com/user-attachments/assets/fefecbed-81d6-43c7-bde7-760f735a6fd8" />
 
 ## Features
 
